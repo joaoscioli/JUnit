@@ -18,13 +18,16 @@ Current focus:
 - parameterized tests;
 - nested test organization;
 - exception assertions;
+- grouped assertions;
+- method sources;
 - readable business-rule examples;
 - small commit discipline.
 
-## Current Example
+## Current Examples
 
-The first example is a `DiscountCalculator` that applies customer-tier and
-large-order discounts.
+### Discount Calculator
+
+`DiscountCalculator` applies customer-tier and large-order discounts.
 
 It demonstrates:
 
@@ -33,6 +36,19 @@ It demonstrates:
 - validating edge cases;
 - testing exceptions explicitly;
 - keeping production code simple enough for the test intention to stay visible.
+
+### Password Validator
+
+`PasswordValidator` validates password requirements and classifies password
+strength.
+
+It demonstrates:
+
+- `@NullAndEmptySource`;
+- `@MethodSource`;
+- grouped assertions with `assertAll`;
+- separating validity checks from classification rules;
+- documenting edge cases through readable test names.
 
 ## Run Tests
 
