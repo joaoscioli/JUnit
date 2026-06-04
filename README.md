@@ -1,11 +1,53 @@
-# JUnit
+# JUnit Testing Lab
 
-> Portfolio status: legacy study notes.
->
-> This repository is preserved as part of my learning history. It is not one of
-> my curated portfolio projects and may be archived or made private later.
-> Current portfolio projects prioritize original implementation, tests,
-> architecture documentation, CI/CD, and production-oriented practices.
+> Portfolio status: active testing lab.
 
-⛺TheCodingCabin 👋 Vamos conhecer um pouco do JUnit.
-![JUnit](https://user-images.githubusercontent.com/105243897/208307638-a17b0cec-2007-4f89-a84f-66e741f2ca8f.png)
+This repository is being rebuilt as a focused Java testing lab. Its purpose is
+to show practical testing discipline with JUnit Jupiter, clean test structure,
+and small examples that explain testing decisions clearly.
+
+## Why This Repository Exists
+
+Testing is one of the strongest signals of engineering maturity in a backend
+portfolio. This lab is intentionally small so each example can focus on one
+testing idea instead of hiding the learning goal inside a large application.
+
+Current focus:
+
+- JUnit Jupiter;
+- parameterized tests;
+- nested test organization;
+- exception assertions;
+- readable business-rule examples;
+- small commit discipline.
+
+## Current Example
+
+The first example is a `DiscountCalculator` that applies customer-tier and
+large-order discounts.
+
+It demonstrates:
+
+- arranging tests by behavior;
+- checking multiple inputs with parameterized tests;
+- validating edge cases;
+- testing exceptions explicitly;
+- keeping production code simple enough for the test intention to stay visible.
+
+## Run Tests
+
+```bash
+mvn test
+```
+
+## Tech Stack
+
+- Java 21
+- Maven
+- JUnit Jupiter
+
+## Portfolio Role
+
+This is a supporting repository. The main portfolio projects should still prove
+end-to-end backend ownership, but this lab helps show focused testing practice
+and continuous improvement.
