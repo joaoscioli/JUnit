@@ -20,6 +20,7 @@ Current focus:
 - exception assertions;
 - grouped assertions;
 - method sources;
+- Mockito test doubles;
 - readable business-rule examples;
 - small commit discipline.
 
@@ -50,6 +51,20 @@ It demonstrates:
 - separating validity checks from classification rules;
 - documenting edge cases through readable test names.
 
+### Order Service
+
+`OrderService` validates an order, checks inventory, charges payment, and returns
+an order receipt.
+
+It demonstrates:
+
+- Mockito extension setup;
+- mocks for external gateways;
+- stubbing with `when(...).thenReturn(...)`;
+- interaction verification with `verify`;
+- protecting against unwanted payment calls when validation or inventory checks
+  fail.
+
 ## Run Tests
 
 ```bash
@@ -61,6 +76,7 @@ mvn test
 - Java 21
 - Maven
 - JUnit Jupiter
+- Mockito
 
 ## Portfolio Role
 
