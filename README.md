@@ -74,6 +74,7 @@ mvn test
 ## Testing Style
 
 - [Test Style Guide](docs/test-style-guide.md)
+- [Test Checklist](docs/test-checklist.md)
 
 ## Tech Stack
 
