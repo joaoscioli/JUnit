@@ -71,6 +71,10 @@ It demonstrates:
 mvn test
 ```
 
+## Testing Style
+
+- [Test Style Guide](docs/test-style-guide.md)
+
 ## Tech Stack
 
 - Java 21
