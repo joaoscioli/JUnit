@@ -77,6 +77,7 @@ mvn test
 - [Test Checklist](docs/test-checklist.md)
 - [Test Data Guide](docs/test-data-guide.md)
 - [Mockito Guidelines](docs/mockito-guidelines.md)
+- [Coverage Strategy](docs/coverage-strategy.md)
 
 ## Tech Stack
 
