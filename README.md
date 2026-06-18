@@ -78,6 +78,7 @@ mvn test
 - [Test Data Guide](docs/test-data-guide.md)
 - [Mockito Guidelines](docs/mockito-guidelines.md)
 - [Coverage Strategy](docs/coverage-strategy.md)
+- [Integration Testing Plan](docs/integration-testing-plan.md)
 
 ## Tech Stack
 
