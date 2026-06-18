@@ -65,6 +65,18 @@ It demonstrates:
 - protecting against unwanted payment calls when validation or inventory checks
   fail.
 
+### Invoice Service
+
+`InvoiceService` creates an invoice and sends a notification through an email
+gateway.
+
+It demonstrates:
+
+- Mockito `ArgumentCaptor`;
+- verifying generated message content;
+- checking that invalid input does not trigger side effects;
+- keeping external communication behind a small interface.
+
 ## Run Tests
 
 ```bash
