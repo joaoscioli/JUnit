@@ -20,6 +20,7 @@ Current focus:
 - exception assertions;
 - grouped assertions;
 - method sources;
+- dynamic tests;
 - Mockito test doubles;
 - readable business-rule examples;
 - small commit discipline.
@@ -48,6 +49,7 @@ It demonstrates:
 - `@NullAndEmptySource`;
 - `@MethodSource`;
 - grouped assertions with `assertAll`;
+- dynamic tests with `@TestFactory`;
 - separating validity checks from classification rules;
 - documenting edge cases through readable test names.
 
