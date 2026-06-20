@@ -93,6 +93,7 @@ mvn test
 - [Mockito Guidelines](docs/mockito-guidelines.md)
 - [Coverage Strategy](docs/coverage-strategy.md)
 - [Integration Testing Plan](docs/integration-testing-plan.md)
+- [CI Testing](docs/ci-testing.md)
 
 ## Tech Stack
 
