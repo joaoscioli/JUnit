@@ -91,6 +91,7 @@ mvn test
 - [Test Checklist](docs/test-checklist.md)
 - [Test Data Guide](docs/test-data-guide.md)
 - [Test Naming](docs/test-naming.md)
+- [Assertion Strategy](docs/assertion-strategy.md)
 - [Mockito Guidelines](docs/mockito-guidelines.md)
 - [Coverage Strategy](docs/coverage-strategy.md)
 - [Integration Testing Plan](docs/integration-testing-plan.md)
