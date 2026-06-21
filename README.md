@@ -90,6 +90,7 @@ mvn test
 - [Test Style Guide](docs/test-style-guide.md)
 - [Test Checklist](docs/test-checklist.md)
 - [Test Data Guide](docs/test-data-guide.md)
+- [Test Naming](docs/test-naming.md)
 - [Mockito Guidelines](docs/mockito-guidelines.md)
 - [Coverage Strategy](docs/coverage-strategy.md)
 - [Integration Testing Plan](docs/integration-testing-plan.md)
