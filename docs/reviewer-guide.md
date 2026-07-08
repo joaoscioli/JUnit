@@ -1,0 +1,25 @@
+# Reviewer Guide
+
+This guide helps a technical reviewer understand the testing habits demonstrated
+by this repository.
+
+## What To Review First
+
+1. `README.md` for repository purpose.
+2. `docs/test-style-guide.md` for naming and structure.
+3. `docs/assertion-strategy.md` for assertion quality.
+4. `docs/test-boundaries.md` for unit versus integration trade-offs.
+5. `src/test/java` for concrete examples.
+
+## Strong Signals
+
+- Tests focus on behavior rather than implementation details.
+- Names describe the scenario and expected outcome.
+- Fixtures are intentionally small and readable.
+- Boundary and failure cases are documented as first-class testing concerns.
+
+## Interview Talking Points
+
+- Explain the difference between testing behavior and testing implementation.
+- Discuss when mocks help and when they make tests brittle.
+- Show how naming, fixtures, and assertions affect maintainability.
