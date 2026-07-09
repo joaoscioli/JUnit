@@ -56,6 +56,11 @@ class PasswordValidatorTest {
                     () -> assertEquals(PasswordStrength.STRONG, validator.strengthOf(password))
             );
         }
+
+        @Test
+        void doesNotTreatWhitespaceAsAStrengthSymbol() {
+            assertEquals(PasswordStrength.ACCEPTABLE, validator.strengthOf("SecurePass1 "));
+        }
     }
 
     private static Stream<Arguments> passwordStrengthExamples() {

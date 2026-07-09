@@ -37,6 +37,8 @@ public class PasswordValidator {
     }
 
     private boolean hasSymbol(String value) {
-        return value.chars().anyMatch(character -> !Character.isLetterOrDigit(character));
+        return value.chars().anyMatch(character ->
+                !Character.isLetterOrDigit(character) && !Character.isWhitespace(character)
+        );
     }
 }
