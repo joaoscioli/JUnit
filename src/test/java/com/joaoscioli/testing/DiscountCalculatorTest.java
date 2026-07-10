@@ -38,6 +38,13 @@ class DiscountCalculatorTest {
 
             assertEquals(85_000, finalAmount);
         }
+
+        @Test
+        void calculatesLargeEnterpriseOrderWithoutOverflow() {
+            long finalAmount = calculator.applyDiscount(Long.MAX_VALUE, CustomerTier.ENTERPRISE);
+
+            assertEquals(6_917_529_027_641_081_856L, finalAmount);
+        }
     }
 
     @Nested

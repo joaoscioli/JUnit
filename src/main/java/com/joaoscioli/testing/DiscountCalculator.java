@@ -1,5 +1,6 @@
 package com.joaoscioli.testing;
 
+import java.math.BigInteger;
 import java.util.Objects;
 
 public class DiscountCalculator {
@@ -19,7 +20,12 @@ public class DiscountCalculator {
             discountPercentage += LARGE_ORDER_BONUS_PERCENTAGE;
         }
 
-        return subtotalCents - (subtotalCents * discountPercentage / 100);
+        long discountCents = BigInteger.valueOf(subtotalCents)
+                .multiply(BigInteger.valueOf(discountPercentage))
+                .divide(BigInteger.valueOf(100))
+                .longValueExact();
+
+        return subtotalCents - discountCents;
     }
 
     private int baseDiscountFor(CustomerTier tier) {
