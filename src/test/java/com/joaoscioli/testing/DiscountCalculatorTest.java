@@ -53,10 +53,12 @@ class DiscountCalculatorTest {
         @ParameterizedTest
         @ValueSource(longs = {0, -1, -500})
         void rejectsNonPositiveSubtotals(long subtotalCents) {
-            assertThrows(
+            var exception = assertThrows(
                     IllegalArgumentException.class,
                     () -> calculator.applyDiscount(subtotalCents, CustomerTier.STANDARD)
             );
+
+            assertEquals("subtotalCents must be greater than zero", exception.getMessage());
         }
 
         @Test
