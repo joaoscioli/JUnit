@@ -10,6 +10,7 @@ by this repository.
 3. `docs/assertion-strategy.md` for assertion quality.
 4. `docs/test-boundaries.md` for unit versus integration trade-offs.
 5. `src/test/java` for concrete examples.
+6. `DiscountCalculatorTest` for boundary values and validation contracts.
 
 ## Strong Signals
 
@@ -17,9 +18,11 @@ by this repository.
 - Names describe the scenario and expected outcome.
 - Fixtures are intentionally small and readable.
 - Boundary and failure cases are documented as first-class testing concerns.
+- Validation messages are asserted when they represent a behavior contract.
 
 ## Interview Talking Points
 
 - Explain the difference between testing behavior and testing implementation.
 - Discuss when mocks help and when they make tests brittle.
 - Show how naming, fixtures, and assertions affect maintainability.
+- Explain why numeric boundaries matter in money-related code.
