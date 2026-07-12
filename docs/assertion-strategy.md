@@ -39,6 +39,15 @@ Use Mockito verification for external boundaries:
 Avoid verifying internal implementation steps that could change without
 changing behavior.
 
+## Error Contracts
+
+When an exception message is part of the public contract, assert it directly.
+This is useful for validation rules returned by APIs, logs, or user-facing
+diagnostics.
+
+Avoid asserting messages for purely internal exceptions unless the message
+itself carries business meaning.
+
 ## Portfolio Signal
 
 Good assertions show that tests were written to protect behavior, not just to
