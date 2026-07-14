@@ -55,6 +55,11 @@ AuthenticationApiIntegrationTest
 BillingEventConsumerIntegrationTest
 ```
 
+## Next Lab Increment
+
+Add one focused Spring Boot integration test that proves validation errors flow
+through the HTTP layer with the same message asserted in unit tests.
+
 ## Implementation Principles
 
 - Prefer realistic infrastructure over mocks for database behavior.
