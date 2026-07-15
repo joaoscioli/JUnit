@@ -98,6 +98,12 @@ mvn test
 - [Integration Testing Plan](docs/integration-testing-plan.md)
 - [CI Testing](docs/ci-testing.md)
 
+## Interview Checkpoint
+
+A reviewer should inspect the discount and order tests first. They show
+boundary values, validation contracts, grouped assertions, and Mockito usage
+around external dependencies.
+
 ## Tech Stack
 
 - Java 21
