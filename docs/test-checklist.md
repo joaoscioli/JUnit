@@ -31,3 +31,10 @@ Use this checklist before considering a test example complete.
 - Edge cases show engineering maturity.
 - Mocks are useful at boundaries.
 - A small readable test suite can be stronger than a large noisy one.
+
+## Questions This Lab Can Answer
+
+- When should an exception message be asserted?
+- How do parameterized tests improve coverage without copy-paste?
+- What makes a mock useful instead of brittle?
+- Why do money-related calculations need boundary tests?
