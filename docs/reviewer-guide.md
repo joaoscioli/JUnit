@@ -26,3 +26,8 @@ by this repository.
 - Discuss when mocks help and when they make tests brittle.
 - Show how naming, fixtures, and assertions affect maintainability.
 - Explain why numeric boundaries matter in money-related code.
+
+## Next Practical Step
+
+Add one Spring Boot-style integration example that proves validation errors
+travel through the HTTP boundary, not only through isolated unit tests.
