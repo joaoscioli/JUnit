@@ -104,6 +104,12 @@ A reviewer should inspect the discount and order tests first. They show
 boundary values, validation contracts, grouped assertions, and Mockito usage
 around external dependencies.
 
+## Portfolio Proof
+
+This repository proves testing discipline directly. It shows how readable tests
+protect business behavior, edge cases, validation rules, and external
+boundaries without turning the suite into noise.
+
 ## Tech Stack
 
 - Java 21
