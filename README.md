@@ -36,6 +36,7 @@ It demonstrates:
 - arranging tests by behavior;
 - checking multiple inputs with parameterized tests;
 - validating edge cases;
+- protecting money-related calculations from numeric overflow;
 - testing exceptions explicitly;
 - keeping production code simple enough for the test intention to stay visible.
 
