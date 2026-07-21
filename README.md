@@ -98,6 +98,7 @@ mvn test
 - [Coverage Strategy](docs/coverage-strategy.md)
 - [Integration Testing Plan](docs/integration-testing-plan.md)
 - [CI Testing](docs/ci-testing.md)
+- [Changelog](CHANGELOG.md)
 
 ## Interview Checkpoint
 
