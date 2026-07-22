@@ -2,6 +2,9 @@
 
 This project follows small, reviewable increments. Dates use `YYYY-MM-DD`.
 
+Review cadence: each portfolio update should make a testing habit easier to
+review, explain, or reuse in a larger Spring Boot project.
+
 ## Unreleased
 
 - Planned: focused Spring Boot-style integration testing example.
