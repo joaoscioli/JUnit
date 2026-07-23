@@ -5,6 +5,12 @@ This project follows small, reviewable increments. Dates use `YYYY-MM-DD`.
 Review cadence: each portfolio update should make a testing habit easier to
 review, explain, or reuse in a larger Spring Boot project.
 
+## How To Discuss This History
+
+Use this changelog to show testing maturity over time. The strongest narrative
+is moving from happy paths to boundaries, validation contracts, and external
+side-effect protection.
+
 ## Unreleased
 
 - Planned: focused Spring Boot-style integration testing example.
