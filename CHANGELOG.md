@@ -16,6 +16,9 @@ side-effect protection.
 Ready for interview review when tests explain behavior, protect edge cases, and
 avoid coupling too tightly to implementation details.
 
+Current public signal: focused Java testing examples covering boundaries,
+validation contracts, mocks, and readable assertions.
+
 ## Unreleased
 
 - Planned: focused Spring Boot-style integration testing example.
