@@ -16,3 +16,9 @@ Use this short script to present the repository in a technical interview.
 - Tests document behavior.
 - Edge cases are first-class signals of engineering maturity.
 - Mocks are used at boundaries, not for every internal detail.
+
+## Before The Interview
+
+- Open one parameterized test and one Mockito test.
+- Be ready to explain a boundary-value test.
+- Prepare one example of a brittle test and how to avoid it.
