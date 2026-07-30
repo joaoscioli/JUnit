@@ -22,3 +22,8 @@ Use this short script to present the repository in a technical interview.
 - Open one parameterized test and one Mockito test.
 - Be ready to explain a boundary-value test.
 - Prepare one example of a brittle test and how to avoid it.
+
+## Avoid Saying
+
+- "The goal is high coverage." Instead, explain which behavior is protected.
+- "Mocks make tests faster." Instead, explain why mocks belong at boundaries.
