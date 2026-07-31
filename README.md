@@ -90,6 +90,7 @@ mvn test
 
 - [Test Style Guide](docs/test-style-guide.md)
 - [Demo Script](docs/demo-script.md)
+- [Interview Questions](docs/interview-questions.md)
 - [Test Checklist](docs/test-checklist.md)
 - [Test Data Guide](docs/test-data-guide.md)
 - [Test Naming](docs/test-naming.md)
