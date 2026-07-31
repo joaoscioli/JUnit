@@ -23,6 +23,13 @@ Use this short script to present the repository in a technical interview.
 - Be ready to explain a boundary-value test.
 - Prepare one example of a brittle test and how to avoid it.
 
+## Evidence To Open
+
+- `src/test/java/com/joaoscioli/testing/DiscountCalculatorTest.java`
+- `src/test/java/com/joaoscioli/testing/OrderServiceTest.java`
+- `src/test/java/com/joaoscioli/testing/InvoiceServiceTest.java`
+- `src/test/java/com/joaoscioli/testing/PasswordValidatorDynamicTest.java`
+
 ## Avoid Saying
 
 - "The goal is high coverage." Instead, explain which behavior is protected.
