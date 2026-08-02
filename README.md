@@ -89,6 +89,7 @@ mvn test
 ## Testing Style
 
 - [Test Style Guide](docs/test-style-guide.md)
+- [Reviewer Scorecard](docs/reviewer-scorecard.md)
 - [Demo Script](docs/demo-script.md)
 - [Interview Questions](docs/interview-questions.md)
 - [Test Checklist](docs/test-checklist.md)
