@@ -90,6 +90,7 @@ mvn test
 
 - [Test Style Guide](docs/test-style-guide.md)
 - [Reviewer Scorecard](docs/reviewer-scorecard.md)
+- [Technical Depth Map](docs/technical-depth-map.md)
 - [Demo Script](docs/demo-script.md)
 - [Interview Questions](docs/interview-questions.md)
 - [Test Checklist](docs/test-checklist.md)
