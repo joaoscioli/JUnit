@@ -1,2 +1,11 @@
-# Default repository owner
+# Repository owner
 * @joaoscioli
+
+# Testing examples
+/src/main/java/ @joaoscioli
+/src/test/java/ @joaoscioli
+
+# Testing documentation and GitHub workflow
+/docs/ @joaoscioli
+/.github/ @joaoscioli
+/pom.xml @joaoscioli
