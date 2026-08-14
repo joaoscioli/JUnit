@@ -1,24 +1,26 @@
 # Security Policy
 
-This repository is a Java testing lab. Security concerns usually relate to test
-data, dependency use, and examples that may normalize unsafe behavior.
+This repository is a Java testing lab, so security feedback should focus on
+dependency safety, test data hygiene, and examples that model secure behavior.
 
 ## Supported Scope
 
-Security review focuses on:
+Security feedback is welcome for:
 
-- secrets or tokens accidentally committed in fixtures;
-- test data that resembles real personal data;
-- dependency risk in runnable examples;
-- tests that hide or normalize unsafe behavior.
+- dependency vulnerabilities;
+- accidental secret exposure in tests or fixtures;
+- examples that normalize unsafe validation or boundary handling;
+- misleading test guidance around security-sensitive behavior.
 
-## Reporting A Security Concern
+## Reporting
 
-Open a concise issue with the affected file and the risk. Do not include real
-credentials, tokens, or private data in the report.
+Please do not open a public issue with sensitive details.
 
-## Development Practices
+Send a private report to `joaoscioli@outlook.com` with the affected file, the
+risk, and a suggested mitigation when possible.
 
-- Use fake data in fixtures.
-- Keep test credentials clearly synthetic.
-- Add regression tests when fixing security-sensitive behavior.
+## Security Expectations
+
+- Test fixtures must not contain real secrets or personal data.
+- Validation examples should make failure behavior explicit.
+- Security-sensitive tests should explain the risk they protect.
