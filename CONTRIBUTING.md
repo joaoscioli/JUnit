@@ -15,6 +15,13 @@ This repository is maintained as a Java testing lab.
 - Check whether the example improves the testing guide.
 - Keep fixtures and test data easy to understand.
 
+## Portfolio Contribution Discipline
+
+- Start from a small issue with a clear reviewer signal.
+- Keep each pull request narrow enough to explain in five minutes.
+- Prefer changes that show why a test protects meaningful behavior.
+- Avoid examples that only increase coverage without improving confidence.
+
 ## Review Focus
 
 Reviewers should look for clarity, deterministic behavior, useful assertions,
