@@ -122,6 +122,12 @@ This repository proves testing discipline directly. It shows how readable tests
 protect business behavior, edge cases, validation rules, and external
 boundaries without turning the suite into noise.
 
+## Fast Review Path
+
+1. Read the [30-Second Pitch](docs/30-second-pitch.md) to understand the repository signal.
+2. Open the [Interview Route](docs/interview-route.md) to follow the testing discussion.
+3. Inspect `DiscountCalculatorTest` and `OrderServiceTest` to compare edge cases and mocked boundaries.
+
 ## Tech Stack
 
 - Java 21
