@@ -24,6 +24,14 @@ validation contracts, mocks, and readable assertions.
 - Planned: focused Spring Boot-style integration testing example.
 - Planned: more HTTP-boundary validation examples.
 
+## 2026-08 Interview Readiness
+
+- Added fast review path and stronger guidance for presenting testing examples.
+- Refined GitHub hygiene with issue, pull request, CODEOWNERS, security, support,
+  contributing, and Dependabot configuration updates.
+- Clarified how to discuss tests through behavior, edge cases, boundaries, and
+  reviewer confidence.
+
 ## 2026-07 Portfolio Hardening
 
 - Added boundary testing for money-related calculations.
