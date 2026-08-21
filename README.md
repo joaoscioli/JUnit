@@ -96,6 +96,7 @@ mvn test
 - [30-Second Pitch](docs/30-second-pitch.md)
 - [Interview Route](docs/interview-route.md)
 - [Key Talking Points](docs/key-talking-points.md)
+- [Pre-Interview Checklist](docs/pre-interview-checklist.md)
 - [Next Review Focus](docs/next-review-focus.md)
 - [Demo Script](docs/demo-script.md)
 - [Interview Questions](docs/interview-questions.md)
