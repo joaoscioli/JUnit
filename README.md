@@ -98,6 +98,7 @@ mvn test
 - [Key Talking Points](docs/key-talking-points.md)
 - [Pre-Interview Checklist](docs/pre-interview-checklist.md)
 - [Tough Interview Questions](docs/tough-interview-questions.md)
+- [Senior Review Notes](docs/senior-review-notes.md)
 - [Next Review Focus](docs/next-review-focus.md)
 - [Demo Script](docs/demo-script.md)
 - [Interview Questions](docs/interview-questions.md)
