@@ -101,6 +101,7 @@ mvn test
 - [Senior Review Notes](docs/senior-review-notes.md)
 - [Architecture Review Checklist](docs/architecture-review-checklist.md)
 - [Business Value](docs/business-value.md)
+- [Technical Debt Register](docs/technical-debt-register.md)
 - [Next Review Focus](docs/next-review-focus.md)
 - [Demo Script](docs/demo-script.md)
 - [Interview Questions](docs/interview-questions.md)
