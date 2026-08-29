@@ -104,6 +104,7 @@ mvn test
 - [Technical Debt Register](docs/technical-debt-register.md)
 - [Decision Log](docs/decision-log.md)
 - [Production Readiness Matrix](docs/production-readiness-matrix.md)
+- [Demo Evaluation Rubric](docs/demo-evaluation-rubric.md)
 - [Next Review Focus](docs/next-review-focus.md)
 - [Demo Script](docs/demo-script.md)
 - [Interview Questions](docs/interview-questions.md)
