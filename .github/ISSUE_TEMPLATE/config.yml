@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Portfolio review context
+    url: https://github.com/joaoscioli/JUnit#readme
+    about: Read the project goals, review path, and documentation before opening an issue.
