@@ -109,6 +109,7 @@ mvn test
 - [Repository Health Scorecard](docs/repository-health-scorecard.md)
 - [Reviewer FAQ](docs/reviewer-faq.md)
 - [Interview Red Flags](docs/interview-red-flags.md)
+- [Technical Storytelling Guide](docs/technical-storytelling-guide.md)
 - [Next Review Focus](docs/next-review-focus.md)
 - [Demo Script](docs/demo-script.md)
 - [Interview Questions](docs/interview-questions.md)
