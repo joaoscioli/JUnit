@@ -19,3 +19,10 @@ make refactoring safer.
 - When would you replace a mock with an integration test?
 - How do you keep tests readable as scenarios grow?
 - What kind of failure should this test produce?
+
+## Strong Answer Criteria
+
+- Names the behavior under protection.
+- Explains the boundary being tested.
+- Mentions at least one edge case or failure path.
+- Connects the test to refactoring confidence.
