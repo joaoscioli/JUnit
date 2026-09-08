@@ -114,6 +114,7 @@ mvn test
 - [Next 90 Days Roadmap](docs/next-90-days-roadmap.md)
 - [Hiring Manager One-Pager](docs/hiring-manager-one-pager.md)
 - [Repository Maturity Levels](docs/repository-maturity-levels.md)
+- [Interview Practice Plan](docs/interview-practice-plan.md)
 - [Next Review Focus](docs/next-review-focus.md)
 - [Demo Script](docs/demo-script.md)
 - [Interview Questions](docs/interview-questions.md)
