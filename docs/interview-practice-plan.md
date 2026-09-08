@@ -26,3 +26,10 @@ make refactoring safer.
 - Explains the boundary being tested.
 - Mentions at least one edge case or failure path.
 - Connects the test to refactoring confidence.
+
+## Before the Interview
+
+- Read the README review path.
+- Pick two examples that show different test boundaries.
+- Prepare one story about a brittle test and how to improve it.
+- Be ready to explain why useful tests are more important than raw coverage.
