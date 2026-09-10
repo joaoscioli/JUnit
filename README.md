@@ -91,6 +91,7 @@ mvn test
 - [Test Style Guide](docs/test-style-guide.md)
 - [Portfolio Review Index](docs/portfolio-review-index.md)
 - [Evidence Map](docs/evidence-map.md)
+- [Engineering Impact](docs/engineering-impact.md)
 - [Reviewer Scorecard](docs/reviewer-scorecard.md)
 - [Technical Depth Map](docs/technical-depth-map.md)
 - [Portfolio Positioning](docs/portfolio-positioning.md)
