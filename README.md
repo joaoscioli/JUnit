@@ -96,6 +96,7 @@ mvn test
 - [Reviewer Entrypoint](docs/reviewer-entrypoint.md)
 - [Next Demo Slice](docs/next-demo-slice.md)
 - [Technical Risks](docs/technical-risks.md)
+- [Implementation Priority](docs/implementation-priority.md)
 - [Reviewer Scorecard](docs/reviewer-scorecard.md)
 - [Technical Depth Map](docs/technical-depth-map.md)
 - [Portfolio Positioning](docs/portfolio-positioning.md)
