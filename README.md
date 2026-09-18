@@ -98,6 +98,7 @@ mvn test
 - [Technical Risks](docs/technical-risks.md)
 - [Implementation Priority](docs/implementation-priority.md)
 - [Acceptance Criteria](docs/acceptance-criteria.md)
+- [Demo Readiness Checklist](docs/demo-readiness-checklist.md)
 - [Reviewer Scorecard](docs/reviewer-scorecard.md)
 - [Technical Depth Map](docs/technical-depth-map.md)
 - [Portfolio Positioning](docs/portfolio-positioning.md)
