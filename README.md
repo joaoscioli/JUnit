@@ -99,6 +99,7 @@ mvn test
 - [Implementation Priority](docs/implementation-priority.md)
 - [Acceptance Criteria](docs/acceptance-criteria.md)
 - [Demo Readiness Checklist](docs/demo-readiness-checklist.md)
+- [Reviewer Question Bank](docs/reviewer-question-bank.md)
 - [Reviewer Scorecard](docs/reviewer-scorecard.md)
 - [Technical Depth Map](docs/technical-depth-map.md)
 - [Portfolio Positioning](docs/portfolio-positioning.md)
