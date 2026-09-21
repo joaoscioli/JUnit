@@ -101,6 +101,7 @@ mvn test
 - [Demo Readiness Checklist](docs/demo-readiness-checklist.md)
 - [Reviewer Question Bank](docs/reviewer-question-bank.md)
 - [Interview Defense Notes](docs/interview-defense-notes.md)
+- [Seniority Evidence](docs/seniority-evidence.md)
 - [Reviewer Scorecard](docs/reviewer-scorecard.md)
 - [Technical Depth Map](docs/technical-depth-map.md)
 - [Portfolio Positioning](docs/portfolio-positioning.md)
