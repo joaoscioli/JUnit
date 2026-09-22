@@ -103,6 +103,7 @@ mvn test
 - [Interview Defense Notes](docs/interview-defense-notes.md)
 - [Seniority Evidence](docs/seniority-evidence.md)
 - [Recruiter Summary](docs/recruiter-summary.md)
+- [Technical Elevator Pitch](docs/technical-elevator-pitch.md)
 - [Reviewer Scorecard](docs/reviewer-scorecard.md)
 - [Technical Depth Map](docs/technical-depth-map.md)
 - [Portfolio Positioning](docs/portfolio-positioning.md)
