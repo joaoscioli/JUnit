@@ -105,6 +105,7 @@ mvn test
 - [Recruiter Summary](docs/recruiter-summary.md)
 - [Technical Elevator Pitch](docs/technical-elevator-pitch.md)
 - [Technical Review Map](docs/technical-review-map.md)
+- [Interview Evaluation Criteria](docs/interview-evaluation-criteria.md)
 - [Reviewer Scorecard](docs/reviewer-scorecard.md)
 - [Technical Depth Map](docs/technical-depth-map.md)
 - [Portfolio Positioning](docs/portfolio-positioning.md)
