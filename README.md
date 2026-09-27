@@ -107,6 +107,7 @@ mvn test
 - [Technical Review Map](docs/technical-review-map.md)
 - [Interview Evaluation Criteria](docs/interview-evaluation-criteria.md)
 - [Deep Dive Prompts](docs/deep-dive-prompts.md)
+- [Hiring Signal](docs/hiring-signal.md)
 - [Reviewer Scorecard](docs/reviewer-scorecard.md)
 - [Technical Depth Map](docs/technical-depth-map.md)
 - [Portfolio Positioning](docs/portfolio-positioning.md)
