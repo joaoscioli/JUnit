@@ -13,12 +13,12 @@ public class OrderService {
 
     public OrderReceipt placeOrder(OrderRequest request) {
         validate(request);
+        long totalCents = Math.multiplyExact((long) request.quantity(), request.unitPriceCents());
 
         if (!inventoryGateway.hasEnoughStock(request.sku(), request.quantity())) {
             throw new IllegalStateException("not enough stock");
         }
 
-        long totalCents = request.quantity() * request.unitPriceCents();
         String paymentId = paymentGateway.charge(totalCents);
 
         return new OrderReceipt(paymentId, totalCents);

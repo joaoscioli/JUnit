@@ -66,6 +66,32 @@ class OrderServiceTest {
         verifyNoInteractions(inventoryGateway, paymentGateway);
     }
 
+    @Test
+    void rejectsOverflowingTotalBeforeCallingExternalGateways() {
+        OrderService service = new OrderService(inventoryGateway, paymentGateway);
+        OrderRequest request = new OrderRequest("keyboard-pro", 2, Long.MAX_VALUE / 2 + 1);
+
+        assertThrows(ArithmeticException.class, () -> service.placeOrder(request));
+
+        verifyNoInteractions(inventoryGateway, paymentGateway);
+    }
+
+    @Test
+    void chargesLargestRepresentableTotalWithoutOverflow() {
+        OrderService service = new OrderService(inventoryGateway, paymentGateway);
+        OrderRequest request = new OrderRequest("keyboard-pro", 1, Long.MAX_VALUE);
+        when(inventoryGateway.hasEnoughStock("keyboard-pro", 1)).thenReturn(true);
+        when(paymentGateway.charge(Long.MAX_VALUE)).thenReturn("pay_boundary");
+
+        OrderReceipt receipt = service.placeOrder(request);
+
+        assertAll(
+                () -> assertEquals("pay_boundary", receipt.paymentId()),
+                () -> assertEquals(Long.MAX_VALUE, receipt.totalCents())
+        );
+        verify(paymentGateway).charge(Long.MAX_VALUE);
+    }
+
     private static Stream<OrderRequest> invalidRequests() {
         return Stream.of(
                 null,
