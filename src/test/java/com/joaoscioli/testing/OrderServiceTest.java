@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.Arguments;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -12,6 +13,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -58,10 +60,12 @@ class OrderServiceTest {
 
     @ParameterizedTest
     @MethodSource("invalidRequests")
-    void rejectsInvalidRequestsBeforeCallingExternalGateways(OrderRequest request) {
+    void rejectsInvalidRequestsBeforeCallingExternalGateways(
+            OrderRequest request, Class<? extends RuntimeException> exceptionType, String message) {
         OrderService service = new OrderService(inventoryGateway, paymentGateway);
 
-        assertThrows(RuntimeException.class, () -> service.placeOrder(request));
+        var exception = assertThrowsExactly(exceptionType, () -> service.placeOrder(request));
+        assertEquals(message, exception.getMessage());
 
         verifyNoInteractions(inventoryGateway, paymentGateway);
     }
@@ -92,12 +96,16 @@ class OrderServiceTest {
         verify(paymentGateway).charge(Long.MAX_VALUE);
     }
 
-    private static Stream<OrderRequest> invalidRequests() {
+    private static Stream<Arguments> invalidRequests() {
         return Stream.of(
-                null,
-                new OrderRequest("", 1, 25_000),
-                new OrderRequest("keyboard-pro", 0, 25_000),
-                new OrderRequest("keyboard-pro", 1, 0)
+                Arguments.of(null, NullPointerException.class, "request must not be null"),
+                Arguments.of(new OrderRequest(null, 1, 25_000), IllegalArgumentException.class, "sku must not be blank"),
+                Arguments.of(new OrderRequest("", 1, 25_000), IllegalArgumentException.class, "sku must not be blank"),
+                Arguments.of(new OrderRequest(" \t", 1, 25_000), IllegalArgumentException.class, "sku must not be blank"),
+                Arguments.of(new OrderRequest("keyboard-pro", 0, 25_000), IllegalArgumentException.class, "quantity must be greater than zero"),
+                Arguments.of(new OrderRequest("keyboard-pro", -1, 25_000), IllegalArgumentException.class, "quantity must be greater than zero"),
+                Arguments.of(new OrderRequest("keyboard-pro", 1, 0), IllegalArgumentException.class, "unitPriceCents must be greater than zero"),
+                Arguments.of(new OrderRequest("keyboard-pro", 1, -1), IllegalArgumentException.class, "unitPriceCents must be greater than zero")
         );
     }
 }
