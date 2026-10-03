@@ -14,8 +14,11 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -94,6 +97,36 @@ class OrderServiceTest {
                 () -> assertEquals(Long.MAX_VALUE, receipt.totalCents())
         );
         verify(paymentGateway).charge(Long.MAX_VALUE);
+    }
+
+    @Test
+    void propagatesInventoryFailureWithoutAttemptingPayment() {
+        var service = new OrderService(inventoryGateway, paymentGateway);
+        var request = new OrderRequest("keyboard-pro", 2, 25_000);
+        var failure = new IllegalStateException("inventory unavailable");
+        when(inventoryGateway.hasEnoughStock("keyboard-pro", 2)).thenThrow(failure);
+
+        assertSame(failure, assertThrowsExactly(IllegalStateException.class, () -> service.placeOrder(request)));
+
+        verify(inventoryGateway).hasEnoughStock("keyboard-pro", 2);
+        verifyNoMoreInteractions(inventoryGateway);
+        verifyNoInteractions(paymentGateway);
+    }
+
+    @Test
+    void propagatesPaymentFailureWithoutRetryingTheCharge() {
+        var service = new OrderService(inventoryGateway, paymentGateway);
+        var request = new OrderRequest("keyboard-pro", 2, 25_000);
+        var failure = new IllegalStateException("payment unavailable");
+        when(inventoryGateway.hasEnoughStock("keyboard-pro", 2)).thenReturn(true);
+        when(paymentGateway.charge(50_000)).thenThrow(failure);
+
+        assertSame(failure, assertThrowsExactly(IllegalStateException.class, () -> service.placeOrder(request)));
+
+        var calls = inOrder(inventoryGateway, paymentGateway);
+        calls.verify(inventoryGateway).hasEnoughStock("keyboard-pro", 2);
+        calls.verify(paymentGateway).charge(50_000);
+        verifyNoMoreInteractions(inventoryGateway, paymentGateway);
     }
 
     private static Stream<Arguments> invalidRequests() {
