@@ -20,6 +20,9 @@ public class OrderService {
         }
 
         String paymentId = paymentGateway.charge(totalCents);
+        if (paymentId == null || paymentId.isBlank()) {
+            throw new IllegalStateException("payment gateway returned a blank payment id");
+        }
 
         return new OrderReceipt(paymentId, totalCents);
     }

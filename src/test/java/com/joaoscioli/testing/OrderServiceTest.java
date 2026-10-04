@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.jupiter.params.provider.Arguments;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -123,6 +125,23 @@ class OrderServiceTest {
 
         assertSame(failure, assertThrowsExactly(IllegalStateException.class, () -> service.placeOrder(request)));
 
+        var calls = inOrder(inventoryGateway, paymentGateway);
+        calls.verify(inventoryGateway).hasEnoughStock("keyboard-pro", 2);
+        calls.verify(paymentGateway).charge(50_000);
+        verifyNoMoreInteractions(inventoryGateway, paymentGateway);
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {" ", "\t\n"})
+    void rejectsBlankPaymentConfirmationWithoutRetryingTheCharge(String paymentId) {
+        var service = new OrderService(inventoryGateway, paymentGateway);
+        var request = new OrderRequest("keyboard-pro", 2, 25_000);
+        when(inventoryGateway.hasEnoughStock("keyboard-pro", 2)).thenReturn(true);
+        when(paymentGateway.charge(50_000)).thenReturn(paymentId);
+
+        var exception = assertThrowsExactly(IllegalStateException.class, () -> service.placeOrder(request));
+        assertEquals("payment gateway returned a blank payment id", exception.getMessage());
         var calls = inOrder(inventoryGateway, paymentGateway);
         calls.verify(inventoryGateway).hasEnoughStock("keyboard-pro", 2);
         calls.verify(paymentGateway).charge(50_000);
