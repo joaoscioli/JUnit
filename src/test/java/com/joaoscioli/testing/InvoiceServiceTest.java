@@ -8,6 +8,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.stream.Stream;
 
@@ -75,6 +76,19 @@ class InvoiceServiceTest {
 
         verify(emailGateway).sendInvoice(
                 "customer@example.com", "Your invoice is ready", "Amount due: 12900 cents");
+        verifyNoMoreInteractions(emailGateway);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {1, Integer.MAX_VALUE})
+    void preservesPositiveAmountBoundariesInTheInvoiceAndEmail(int amountCents) {
+        var service = new InvoiceService(emailGateway);
+
+        var invoice = service.createInvoice(new InvoiceRequest("customer@example.com", amountCents));
+
+        assertEquals(new Invoice("customer@example.com", amountCents, "CREATED"), invoice);
+        verify(emailGateway).sendInvoice("customer@example.com", "Your invoice is ready",
+                "Amount due: " + amountCents + " cents");
         verifyNoMoreInteractions(emailGateway);
     }
 
