@@ -13,6 +13,19 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class DiscountCalculatorTest {
     private final DiscountCalculator calculator = new DiscountCalculator();
 
+    @ParameterizedTest(name = "{0}: subtotal {1} yields {2} cents")
+    @CsvSource({
+            "STANDARD, 99999, 99999", "STANDARD, 100000, 95000", "STANDARD, 100001, 95001",
+            "PREMIUM, 99999, 90000", "PREMIUM, 100000, 85000", "PREMIUM, 100001, 85001",
+            "ENTERPRISE, 99999, 80000", "ENTERPRISE, 100000, 75000", "ENTERPRISE, 100001, 75001",
+            "PREMIUM, 1, 1", "PREMIUM, 9, 9", "PREMIUM, 10, 9",
+            "ENTERPRISE, 4, 4", "ENTERPRISE, 5, 4"
+    })
+    void appliesInclusiveBonusThresholdAndRoundsDiscountDownToWholeCents(
+            CustomerTier tier, long subtotal, long expected) {
+        assertEquals(expected, calculator.applyDiscount(subtotal, tier));
+    }
+
     @Nested
     @DisplayName("tier discounts")
     class TierDiscounts {
