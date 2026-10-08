@@ -64,6 +64,30 @@ class OrderServiceTest {
     }
 
     @ParameterizedTest
+    @MethodSource("positiveTotalBoundaries")
+    void chargesExactPositiveTotalsInStockBeforePaymentOrder(int quantity, long unitPrice, long expectedTotal) {
+        var service = new OrderService(inventoryGateway, paymentGateway);
+        when(inventoryGateway.hasEnoughStock("boundary-sku", quantity)).thenReturn(true);
+        when(paymentGateway.charge(expectedTotal)).thenReturn("pay_exact");
+
+        var receipt = service.placeOrder(new OrderRequest("boundary-sku", quantity, unitPrice));
+
+        assertEquals(new OrderReceipt("pay_exact", expectedTotal), receipt);
+        var calls = inOrder(inventoryGateway, paymentGateway);
+        calls.verify(inventoryGateway).hasEnoughStock("boundary-sku", quantity);
+        calls.verify(paymentGateway).charge(expectedTotal);
+        verifyNoMoreInteractions(inventoryGateway, paymentGateway);
+    }
+
+    private static Stream<Arguments> positiveTotalBoundaries() {
+        return Stream.of(
+                Arguments.of(1, 1L, 1L),
+                Arguments.of(2, 1_500_000_000L, 3_000_000_000L),
+                Arguments.of(2, Long.MAX_VALUE / 2, Long.MAX_VALUE - 1)
+        );
+    }
+
+    @ParameterizedTest
     @MethodSource("invalidRequests")
     void rejectsInvalidRequestsBeforeCallingExternalGateways(
             OrderRequest request, Class<? extends RuntimeException> exceptionType, String message) {
