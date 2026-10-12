@@ -13,6 +13,17 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class DiscountCalculatorTest {
     private final DiscountCalculator calculator = new DiscountCalculator();
 
+    @ParameterizedTest(name = "{0}: maximum long subtotal yields {1} cents")
+    @CsvSource({
+            "STANDARD, 8762203435012037017",
+            "PREMIUM, 7839866231326559436",
+            "ENTERPRISE, 6917529027641081856"
+    })
+    void allTiersPreserveExactCentsWhenPercentageMultiplicationExceedsLongRange(
+            CustomerTier tier, long expected) {
+        assertEquals(expected, calculator.applyDiscount(Long.MAX_VALUE, tier));
+    }
+
     @ParameterizedTest(name = "{0}: subtotal {1} yields {2} cents")
     @CsvSource({
             "STANDARD, 99999, 99999", "STANDARD, 100000, 95000", "STANDARD, 100001, 95001",
