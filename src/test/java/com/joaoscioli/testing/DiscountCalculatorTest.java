@@ -13,6 +13,24 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class DiscountCalculatorTest {
     private final DiscountCalculator calculator = new DiscountCalculator();
 
+    @Test
+    void seededSubtotalsKeepAmountsBoundedAndTierBenefitsOrdered() {
+        var random = new java.util.Random(20261013L);
+        for (int sample = 0; sample < 1_000; sample++) {
+            long subtotal = sample % 2 == 0
+                    ? random.nextLong(1, 200_001)
+                    : random.nextLong(1, Long.MAX_VALUE);
+            long standard = calculator.applyDiscount(subtotal, CustomerTier.STANDARD);
+            long premium = calculator.applyDiscount(subtotal, CustomerTier.PREMIUM);
+            long enterprise = calculator.applyDiscount(subtotal, CustomerTier.ENTERPRISE);
+
+            // Business invariants independent of the percentage calculation formula.
+            org.junit.jupiter.api.Assertions.assertTrue(
+                    0 < enterprise && enterprise <= premium && premium <= standard && standard <= subtotal,
+                    () -> "Tier ordering or monetary bounds violated for subtotal " + subtotal);
+        }
+    }
+
     @ParameterizedTest(name = "{0}: maximum long subtotal yields {1} cents")
     @CsvSource({
             "STANDARD, 8762203435012037017",
