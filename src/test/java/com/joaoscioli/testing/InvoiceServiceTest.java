@@ -24,6 +24,26 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @ExtendWith(MockitoExtension.class)
 class InvoiceServiceTest {
+    @Test
+    void explicitRetryAfterEmailFailureSendsAgainAndReturnsTheInvoice() {
+        var service = new InvoiceService(emailGateway);
+        var request = new InvoiceRequest("customer@example.com", 12_900);
+        var failure = new IllegalStateException("email temporarily unavailable");
+        doThrow(failure).doNothing().when(emailGateway).sendInvoice(
+                "customer@example.com", "Your invoice is ready", "Amount due: 12900 cents");
+
+        assertSame(failure, assertThrowsExactly(IllegalStateException.class,
+                () -> service.createInvoice(request)));
+        // Recovery requires another caller invocation; the service has no automatic retry.
+        verify(emailGateway).sendInvoice(
+                "customer@example.com", "Your invoice is ready", "Amount due: 12900 cents");
+        assertEquals(new Invoice("customer@example.com", 12_900, "CREATED"),
+                service.createInvoice(request));
+        verify(emailGateway, org.mockito.Mockito.times(2)).sendInvoice(
+                "customer@example.com", "Your invoice is ready", "Amount due: 12900 cents");
+        verifyNoMoreInteractions(emailGateway);
+    }
+
     @Mock
     private EmailGateway emailGateway;
 
