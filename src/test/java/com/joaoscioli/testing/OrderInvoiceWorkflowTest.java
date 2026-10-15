@@ -13,6 +13,39 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 /** Component integration with real services and in-memory external boundaries. */
 class OrderInvoiceWorkflowTest {
     @Test
+    void retryingInvoiceWithTheExistingReceiptDoesNotChargeTheOrderAgain() {
+        var payments = new ArrayList<Long>();
+        var emails = new ArrayList<SentEmail>();
+        var failure = new IllegalStateException("email transport unavailable");
+        var orders = new OrderService((sku, quantity) -> true, amount -> {
+            payments.add(amount);
+            return "pay_completed";
+        });
+        var invoices = new InvoiceService((recipient, subject, body) -> {
+            emails.add(new SentEmail(recipient, subject, body));
+            if (emails.size() == 1) {
+                throw failure;
+            }
+        });
+        var receipt = orders.placeOrder(new OrderRequest("keyboard-pro", 2, 25_000));
+        var request = new InvoiceRequest("ada@example.com", receipt.totalCents());
+
+        assertSame(failure, assertThrowsExactly(IllegalStateException.class,
+                () -> invoices.createInvoice(request)));
+        assertEquals(1, emails.size());
+
+        // Retry only the failed boundary using the retained receipt, not placeOrder again.
+        var invoice = invoices.createInvoice(request);
+
+        var expectedEmail = new SentEmail("ada@example.com", "Your invoice is ready", "Amount due: 50000 cents");
+        assertAll(
+                () -> assertEquals(new Invoice("ada@example.com", 50_000, "CREATED"), invoice),
+                () -> assertEquals(List.of(50_000L), payments),
+                () -> assertEquals(List.of(expectedEmail, expectedEmail), emails)
+        );
+    }
+
+    @Test
     void invoiceDeliveryFailureLeavesTheCompletedPaymentVisibleWithoutAutomaticRetry() {
         var payments = new ArrayList<Long>();
         var emails = new ArrayList<SentEmail>();
