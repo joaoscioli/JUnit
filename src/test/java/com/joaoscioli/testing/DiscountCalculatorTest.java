@@ -13,6 +13,25 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class DiscountCalculatorTest {
     private final DiscountCalculator calculator = new DiscountCalculator();
 
+    @ParameterizedTest(name = "{0}: adding 100 cents in bonus band {1} adds {2} payable cents")
+    @CsvSource({"STANDARD, false, 100", "PREMIUM, false, 90", "ENTERPRISE, false, 80",
+            "STANDARD, true, 95", "PREMIUM, true, 85", "ENTERPRISE, true, 75"})
+    void wholeCurrencyIncrementPreservesCentRemaindersWithinEachPricingBand(
+            CustomerTier tier, boolean bonusBand, long expectedIncrement) {
+        var random = new java.util.Random(20261018L);
+        for (int sample = 0; sample < 500; sample++) {
+            long subtotal = bonusBand
+                    ? random.nextLong(100_000, Long.MAX_VALUE - 100)
+                    : random.nextLong(1, 99_900);
+            long original = calculator.applyDiscount(subtotal, tier);
+            long incremented = calculator.applyDiscount(subtotal + 100, tier);
+
+            // Metamorphic check: compare related inputs without duplicating the rounding formula.
+            assertEquals(expectedIncrement, incremented - original,
+                    () -> "Unexpected payable increment for " + tier + " at subtotal " + subtotal);
+        }
+    }
+
     @Test
     void seededSubtotalsKeepAmountsBoundedAndTierBenefitsOrdered() {
         var random = new java.util.Random(20261013L);
