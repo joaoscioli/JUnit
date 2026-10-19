@@ -25,6 +25,28 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 @ExtendWith(MockitoExtension.class)
 class InvoiceServiceTest {
     @Test
+    void capturesEveryInvoiceWithoutLeakingRecipientOrAmountBetweenCalls() {
+        var service = new InvoiceService(emailGateway);
+        var recipients = ArgumentCaptor.forClass(String.class);
+        var subjects = ArgumentCaptor.forClass(String.class);
+        var bodies = ArgumentCaptor.forClass(String.class);
+
+        var first = service.createInvoice(new InvoiceRequest("ada@example.com", 1));
+        var second = service.createInvoice(new InvoiceRequest("grace@example.com", Long.MAX_VALUE));
+
+        verify(emailGateway, org.mockito.Mockito.times(2)).sendInvoice(
+                recipients.capture(), subjects.capture(), bodies.capture());
+        assertAll(
+                () -> assertEquals(new Invoice("ada@example.com", 1, "CREATED"), first),
+                () -> assertEquals(new Invoice("grace@example.com", Long.MAX_VALUE, "CREATED"), second),
+                () -> assertEquals(java.util.List.of("ada@example.com", "grace@example.com"), recipients.getAllValues()),
+                () -> assertEquals(java.util.List.of("Your invoice is ready", "Your invoice is ready"), subjects.getAllValues()),
+                () -> assertEquals(java.util.List.of("Amount due: 1 cents", "Amount due: 9223372036854775807 cents"), bodies.getAllValues())
+        );
+        verifyNoMoreInteractions(emailGateway);
+    }
+
+    @Test
     void explicitRetryAfterEmailFailureSendsAgainAndReturnsTheInvoice() {
         var service = new InvoiceService(emailGateway);
         var request = new InvoiceRequest("customer@example.com", 12_900);
