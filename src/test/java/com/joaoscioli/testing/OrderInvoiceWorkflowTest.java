@@ -13,6 +13,28 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 /** Component integration with real services and in-memory external boundaries. */
 class OrderInvoiceWorkflowTest {
     @Test
+    void paymentFailureStopsInvoiceDeliveryAndDoesNotRetryAnUncertainCharge() {
+        var calls = new ArrayList<String>();
+        var failure = new IllegalStateException("payment outcome unknown");
+        var orders = new OrderService((sku, quantity) -> {
+            calls.add("stock:" + sku + ":" + quantity);
+            return true;
+        }, amount -> {
+            calls.add("charge:" + amount);
+            throw failure;
+        });
+        var invoices = new InvoiceService((recipient, subject, body) -> calls.add("email"));
+
+        var actual = assertThrowsExactly(IllegalStateException.class, () -> {
+            var receipt = orders.placeOrder(new OrderRequest("keyboard-pro", 2, 25_000));
+            invoices.createInvoice(new InvoiceRequest("ada@example.com", receipt.totalCents()));
+        });
+
+        assertSame(failure, actual);
+        assertEquals(List.of("stock:keyboard-pro:2", "charge:50000"), calls);
+    }
+
+    @Test
     void retryingInvoiceWithTheExistingReceiptDoesNotChargeTheOrderAgain() {
         var payments = new ArrayList<Long>();
         var emails = new ArrayList<SentEmail>();
