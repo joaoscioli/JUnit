@@ -12,6 +12,29 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 
 /** Component integration with real services and in-memory external boundaries. */
 class OrderInvoiceWorkflowTest {
+    @org.junit.jupiter.params.ParameterizedTest
+    @org.junit.jupiter.params.provider.NullAndEmptySource
+    @org.junit.jupiter.params.provider.ValueSource(strings = {" ", "\t\n"})
+    void missingPaymentConfirmationStopsInvoiceDeliveryWithoutRetryingAnUncertainCharge(String paymentId) {
+        var calls = new ArrayList<String>();
+        var orders = new OrderService((sku, quantity) -> {
+            calls.add("stock:" + sku + ":" + quantity);
+            return true;
+        }, amount -> {
+            calls.add("charge:" + amount);
+            return paymentId;
+        });
+        var invoices = new InvoiceService((recipient, subject, body) -> calls.add("email"));
+
+        var failure = assertThrowsExactly(IllegalStateException.class, () -> {
+            var receipt = orders.placeOrder(new OrderRequest("keyboard-pro", 2, 25_000));
+            invoices.createInvoice(new InvoiceRequest("ada@example.com", receipt.totalCents()));
+        });
+
+        assertEquals("payment gateway returned a blank payment id", failure.getMessage());
+        assertEquals(List.of("stock:keyboard-pro:2", "charge:50000"), calls);
+    }
+
     @Test
     void paymentFailureStopsInvoiceDeliveryAndDoesNotRetryAnUncertainCharge() {
         var calls = new ArrayList<String>();
