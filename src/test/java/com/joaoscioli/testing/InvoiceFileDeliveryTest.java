@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,6 +26,35 @@ class InvoiceFileDeliveryTest {
                 throw new UncheckedIOException(failure);
             }
         });
+    }
+
+    @Test
+    void deliveryCanRecoverAtTheFilesystemBoundaryWithoutReplacingTheService() throws IOException {
+        var blocker = outbox.resolve("blocked");
+        Files.writeString(blocker, "preserve this file");
+        var attempts = new ArrayList<String>();
+        var destination = new AtomicReference<>(blocker.resolve("invoice.txt"));
+        var invoices = new InvoiceService((recipient, subject, body) -> {
+            attempts.add(body);
+            try {
+                Files.writeString(destination.get(), body);
+            } catch (IOException failure) {
+                throw new UncheckedIOException(failure);
+            }
+        });
+        var request = new InvoiceRequest("ada@example.com", 1);
+
+        assertThrowsExactly(UncheckedIOException.class, () -> invoices.createInvoice(request));
+        assertEquals(List.of("Amount due: 1 cents"), attempts);
+        assertEquals("preserve this file", Files.readString(blocker));
+        var recovered = outbox.resolve("recovered-invoice.txt");
+        assertFalse(Files.exists(recovered));
+        destination.set(recovered);
+
+        assertEquals(new Invoice("ada@example.com", 1, "CREATED"), invoices.createInvoice(request));
+        assertEquals(List.of("Amount due: 1 cents", "Amount due: 1 cents"), attempts);
+        assertEquals("Amount due: 1 cents", Files.readString(recovered));
+        assertEquals("preserve this file", Files.readString(blocker));
     }
 
     @Test
