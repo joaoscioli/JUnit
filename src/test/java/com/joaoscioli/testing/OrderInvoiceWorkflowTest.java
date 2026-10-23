@@ -36,6 +36,37 @@ class OrderInvoiceWorkflowTest {
     }
 
     @Test
+    void inventoryFailureStopsPaymentAndEmailButAllowsALaterExplicitOrder() {
+        var calls = new ArrayList<String>();
+        var failure = new IllegalStateException("inventory unavailable");
+        var checks = new java.util.concurrent.atomic.AtomicInteger();
+        var orders = new OrderService((sku, quantity) -> {
+            calls.add("stock:" + sku + ":" + quantity);
+            if (checks.incrementAndGet() == 1) { throw failure; }
+            return true;
+        }, amount -> {
+            calls.add("charge:" + amount);
+            return "pay_recovered";
+        });
+        var invoices = new InvoiceService((recipient, subject, body) -> calls.add("email:" + body));
+        var request = new OrderRequest("keyboard-pro", 2, 25_000);
+
+        assertSame(failure, assertThrowsExactly(IllegalStateException.class, () -> {
+            var receipt = orders.placeOrder(request);
+            invoices.createInvoice(new InvoiceRequest("ada@example.com", receipt.totalCents()));
+        }));
+        assertEquals(List.of("stock:keyboard-pro:2"), calls);
+
+        var receipt = orders.placeOrder(request);
+        var invoice = invoices.createInvoice(new InvoiceRequest("ada@example.com", receipt.totalCents()));
+
+        assertEquals(new OrderReceipt("pay_recovered", 50_000), receipt);
+        assertEquals(new Invoice("ada@example.com", 50_000, "CREATED"), invoice);
+        assertEquals(List.of("stock:keyboard-pro:2", "stock:keyboard-pro:2", "charge:50000",
+                "email:Amount due: 50000 cents"), calls);
+    }
+
+    @Test
     void paymentFailureStopsInvoiceDeliveryAndDoesNotRetryAnUncertainCharge() {
         var calls = new ArrayList<String>();
         var failure = new IllegalStateException("payment outcome unknown");
