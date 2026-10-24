@@ -12,6 +12,33 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 
 /** Component integration with real services and in-memory external boundaries. */
 class OrderInvoiceWorkflowTest {
+    @Test
+    void overflowingOrderTotalStopsAllExternalEffectsAndDoesNotPoisonTheNextOrder() {
+        var calls = new ArrayList<String>();
+        var orders = new OrderService((sku, quantity) -> {
+            calls.add("stock:" + quantity);
+            return true;
+        }, amount -> {
+            calls.add("charge:" + amount);
+            return "pay_boundary";
+        });
+        var invoices = new InvoiceService((recipient, subject, body) -> calls.add("email:" + body));
+
+        assertThrowsExactly(ArithmeticException.class, () -> {
+            var receipt = orders.placeOrder(new OrderRequest("boundary", 2, Long.MAX_VALUE));
+            invoices.createInvoice(new InvoiceRequest("ada@example.com", receipt.totalCents()));
+        });
+        assertEquals(List.of(), calls);
+
+        var receipt = orders.placeOrder(new OrderRequest("boundary", 1, Long.MAX_VALUE));
+        var invoice = invoices.createInvoice(new InvoiceRequest("ada@example.com", receipt.totalCents()));
+
+        assertEquals(new OrderReceipt("pay_boundary", Long.MAX_VALUE), receipt);
+        assertEquals(new Invoice("ada@example.com", Long.MAX_VALUE, "CREATED"), invoice);
+        assertEquals(List.of("stock:1", "charge:" + Long.MAX_VALUE,
+                "email:Amount due: " + Long.MAX_VALUE + " cents"), calls);
+    }
+
     @org.junit.jupiter.params.ParameterizedTest
     @org.junit.jupiter.params.provider.NullAndEmptySource
     @org.junit.jupiter.params.provider.ValueSource(strings = {" ", "\t\n"})
