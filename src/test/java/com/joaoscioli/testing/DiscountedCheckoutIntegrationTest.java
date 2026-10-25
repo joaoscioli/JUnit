@@ -13,6 +13,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class DiscountedCheckoutIntegrationTest {
     @ParameterizedTest
     @CsvSource({
+            "STANDARD, 1, 1",
+            "PREMIUM, 9, 9",
+            "PREMIUM, 10, 9",
+            "PREMIUM, 11, 10",
+            "ENTERPRISE, 4, 4",
+            "ENTERPRISE, 5, 4",
+            "ENTERPRISE, 6, 5",
             "STANDARD, 99999, 99999",
             "STANDARD, 100000, 95000",
             "PREMIUM, 99999, 90000",
@@ -20,7 +27,7 @@ class DiscountedCheckoutIntegrationTest {
             "ENTERPRISE, 99999, 80000",
             "ENTERPRISE, 100000, 75000"
     })
-    void discountAtTheLargeOrderBoundaryReachesBothPaymentAndInvoice(
+    void discountBoundariesAndWholeCentRoundingReachBothPaymentAndInvoice(
             CustomerTier tier, long subtotal, long expectedTotal) {
         var charges = new ArrayList<Long>();
         var emails = new ArrayList<String>();
