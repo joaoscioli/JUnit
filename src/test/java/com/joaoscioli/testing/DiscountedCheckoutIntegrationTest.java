@@ -13,6 +13,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class DiscountedCheckoutIntegrationTest {
     @ParameterizedTest
     @CsvSource({
+            "STANDARD, 9223372036854775807, 8762203435012037017",
+            "PREMIUM, 9223372036854775807, 7839866231326559436",
+            "ENTERPRISE, 9223372036854775807, 6917529027641081856",
             "STANDARD, 1, 1",
             "PREMIUM, 9, 9",
             "PREMIUM, 10, 9",
