@@ -58,6 +58,28 @@ class InvoiceFileDeliveryTest {
     }
 
     @Test
+    void utf8DeliveryPreservesInternationalRecipientAndExactInvoiceBytes() throws IOException {
+        var destination = outbox.resolve("fatura-東京.txt");
+        var invoices = new InvoiceService((recipient, subject, body) -> {
+            try {
+                Files.writeString(destination, recipient + "\n" + subject + "\n" + body,
+                        java.nio.charset.StandardCharsets.UTF_8);
+            } catch (IOException failure) {
+                throw new UncheckedIOException(failure);
+            }
+        });
+
+        var invoice = invoices.createInvoice(new InvoiceRequest("joão@exemplo.com", 1));
+
+        assertEquals(new Invoice("joão@exemplo.com", 1, "CREATED"), invoice);
+        assertArrayEquals("joão@exemplo.com\nYour invoice is ready\nAmount due: 1 cents"
+                .getBytes(java.nio.charset.StandardCharsets.UTF_8), Files.readAllBytes(destination));
+        try (var files = Files.list(outbox)) {
+            assertEquals(List.of(destination), files.toList());
+        }
+    }
+
+    @Test
     void writesTheCompleteInvoiceToAnIsolatedOutbox() throws IOException {
         var invoice = service().createInvoice(new InvoiceRequest("ada@example.com", 50_000));
 
