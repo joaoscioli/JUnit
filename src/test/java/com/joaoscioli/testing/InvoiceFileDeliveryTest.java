@@ -80,6 +80,31 @@ class InvoiceFileDeliveryTest {
     }
 
     @Test
+    void createNewDeliveryRejectsADuplicateWithoutOverwritingTheOriginalInvoice() throws IOException {
+        var destination = outbox.resolve("invoice.txt");
+        var invoices = new InvoiceService((recipient, subject, body) -> {
+            try {
+                Files.writeString(destination, body, java.nio.file.StandardOpenOption.CREATE_NEW);
+            } catch (IOException failure) {
+                throw new UncheckedIOException(failure);
+            }
+        });
+        assertEquals(new Invoice("ada@example.com", 100, "CREATED"),
+                invoices.createInvoice(new InvoiceRequest("ada@example.com", 100)));
+        var original = Files.readAllBytes(destination);
+
+        var failure = assertThrowsExactly(UncheckedIOException.class,
+                () -> invoices.createInvoice(new InvoiceRequest("ada@example.com", 200)));
+
+        assertInstanceOf(java.nio.file.FileAlreadyExistsException.class, failure.getCause());
+        assertArrayEquals(original, Files.readAllBytes(destination));
+        assertEquals("Amount due: 100 cents", Files.readString(destination));
+        try (var files = Files.list(outbox)) {
+            assertEquals(List.of(destination), files.toList());
+        }
+    }
+
+    @Test
     void writesTheCompleteInvoiceToAnIsolatedOutbox() throws IOException {
         var invoice = service().createInvoice(new InvoiceRequest("ada@example.com", 50_000));
 
