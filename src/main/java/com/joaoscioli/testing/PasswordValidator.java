@@ -6,7 +6,8 @@ public class PasswordValidator {
             return false;
         }
 
-        return password.length() >= 8
+        // Count Unicode code points, rather than UTF-16 units (or grapheme clusters).
+        return password.codePointCount(0, password.length()) >= 8
                 && hasUppercase(password)
                 && hasLowercase(password)
                 && hasDigit(password);
@@ -17,7 +18,7 @@ public class PasswordValidator {
             return PasswordStrength.WEAK;
         }
 
-        if (password.length() >= 12 && hasSymbol(password)) {
+        if (password.codePointCount(0, password.length()) >= 12 && hasSymbol(password)) {
             return PasswordStrength.STRONG;
         }
 
@@ -25,19 +26,19 @@ public class PasswordValidator {
     }
 
     private boolean hasUppercase(String value) {
-        return value.chars().anyMatch(Character::isUpperCase);
+        return value.codePoints().anyMatch(Character::isUpperCase);
     }
 
     private boolean hasLowercase(String value) {
-        return value.chars().anyMatch(Character::isLowerCase);
+        return value.codePoints().anyMatch(Character::isLowerCase);
     }
 
     private boolean hasDigit(String value) {
-        return value.chars().anyMatch(Character::isDigit);
+        return value.codePoints().anyMatch(Character::isDigit);
     }
 
     private boolean hasSymbol(String value) {
-        return value.chars().anyMatch(character ->
+        return value.codePoints().anyMatch(character ->
                 !Character.isLetterOrDigit(character) && !Character.isWhitespace(character)
         );
     }

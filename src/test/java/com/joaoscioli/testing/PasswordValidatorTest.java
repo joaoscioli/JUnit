@@ -19,6 +19,27 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class PasswordValidatorTest {
     private final PasswordValidator validator = new PasswordValidator();
 
+    @ParameterizedTest
+    @MethodSource("unicodePasswordExamples")
+    void countsUnicodeCodePointsAndRecognizesSupplementaryLettersAndDigits(
+            String password, boolean valid, PasswordStrength strength) {
+        assertAll(() -> assertEquals(valid, validator.isValid(password)),
+                () -> assertEquals(strength, validator.strengthOf(password)));
+    }
+
+    private static Stream<Arguments> unicodePasswordExamples() {
+        var upper = new String(Character.toChars(0x10400)); // Deseret uppercase letter
+        var lower = new String(Character.toChars(0x10428)); // Deseret lowercase letter
+        var digit = new String(Character.toChars(0x1D7CE)); // Mathematical digit zero
+        return Stream.of(
+                Arguments.of("Aa1" + upper.repeat(4), false, PasswordStrength.WEAK), // 7, not 11
+                Arguments.of(upper + lower + digit + "abcde", true, PasswordStrength.ACCEPTABLE),
+                Arguments.of("Aa1" + upper.repeat(7) + "!", true, PasswordStrength.ACCEPTABLE), // 11
+                Arguments.of(upper + lower + digit + "abcdefgh!", true, PasswordStrength.STRONG),
+                Arguments.of(upper + lower + digit + "abcdefghi", true, PasswordStrength.ACCEPTABLE)
+        );
+    }
+
     @Nested
     @DisplayName("password validity")
     class PasswordValidity {
