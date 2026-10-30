@@ -25,6 +25,28 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class OrderServiceTest {
+    @Test
+    void explicitOrderAfterPaymentOutageUsesItsOwnAmountWithoutRetryingTheFailedCharge() {
+        var service = new OrderService(inventoryGateway, paymentGateway);
+        var failure = new IllegalStateException("payment temporarily unavailable");
+        when(inventoryGateway.hasEnoughStock("first-sku", 2)).thenReturn(true);
+        when(paymentGateway.charge(50_000)).thenThrow(failure);
+        when(inventoryGateway.hasEnoughStock("second-sku", 3)).thenReturn(true);
+        when(paymentGateway.charge(2_100)).thenReturn("pay_recovered");
+
+        assertSame(failure, assertThrowsExactly(IllegalStateException.class,
+                () -> service.placeOrder(new OrderRequest("first-sku", 2, 25_000))));
+        assertEquals(new OrderReceipt("pay_recovered", 2_100),
+                service.placeOrder(new OrderRequest("second-sku", 3, 700)));
+
+        var calls = inOrder(inventoryGateway, paymentGateway);
+        calls.verify(inventoryGateway).hasEnoughStock("first-sku", 2);
+        calls.verify(paymentGateway).charge(50_000);
+        calls.verify(inventoryGateway).hasEnoughStock("second-sku", 3);
+        calls.verify(paymentGateway).charge(2_100);
+        verifyNoMoreInteractions(inventoryGateway, paymentGateway);
+    }
+
     @Mock
     private InventoryGateway inventoryGateway;
 
