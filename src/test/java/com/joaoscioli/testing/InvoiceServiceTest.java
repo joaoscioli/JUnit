@@ -24,6 +24,22 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @ExtendWith(MockitoExtension.class)
 class InvoiceServiceTest {
+    @ParameterizedTest
+    @MethodSource("invalidInvoices")
+    void rejectedInvoiceDoesNotPreventLaterValidDelivery(InvoiceRequest invalid, String message) {
+        var service = new InvoiceService(emailGateway);
+        var failure = assertThrowsExactly(IllegalArgumentException.class,
+                () -> service.createInvoice(invalid));
+        assertEquals(message, failure.getMessage());
+        verifyNoInteractions(emailGateway);
+
+        assertEquals(new Invoice("recovered@example.com", 500, "CREATED"),
+                service.createInvoice(new InvoiceRequest("recovered@example.com", 500)));
+        verify(emailGateway).sendInvoice("recovered@example.com", "Your invoice is ready",
+                "Amount due: 500 cents");
+        verifyNoMoreInteractions(emailGateway);
+    }
+
     @Test
     void capturesEveryInvoiceWithoutLeakingRecipientOrAmountBetweenCalls() {
         var service = new InvoiceService(emailGateway);
